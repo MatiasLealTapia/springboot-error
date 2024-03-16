@@ -2,7 +2,9 @@ package com.matias.udemy.curso.springboot.error.springbooterror.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.matias.udemy.curso.springboot.error.springbooterror.models.domain.User;
@@ -10,16 +12,8 @@ import com.matias.udemy.curso.springboot.error.springbooterror.models.domain.Use
 @Service
 public class UserService implements IUserService {
 
+    @Autowired
     private List<User> users;
-
-    public UserService() {
-        this.users = new ArrayList<>();
-        users.add(new User(1L, "Pepe", "Gonzalez"));
-        users.add(new User(1L, "Andrés", "Mena"));
-        users.add(new User(1L, "María", "Perez"));
-        users.add(new User(1L, "Josefa", "Ramirez"));
-        users.add(new User(1L, "Ale", "Gutierrez"));
-    }
 
     @Override
     public List<User> findAll() {
@@ -27,15 +21,15 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User findById(Long id) {
-        User user = null;
-        for (User u : users) {
-            if (u.getId().equals(id)) {
-                user = u;
-                break;
-            }
-        }
-        return user;
+    public Optional<User> findById(Long id) {
+        return users.stream().filter(usr -> usr.getId().equals(id)).findFirst();
+        // for (User u : users) {
+        //     if (u.getId().equals(id)) {
+        //         user = u;
+        //         break;
+        //     }
+        // }
+        // return user;
     }
 
 }
